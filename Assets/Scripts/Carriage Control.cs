@@ -6,7 +6,7 @@ public class CarriageControl : MonoBehaviour
 {
     GameObject feedWheel1;
     private Quaternion initialRotation;
-    private float translationSpeed = 0.04f;
+    public float translationSpeed = 0.00004f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,18 +24,21 @@ public class CarriageControl : MonoBehaviour
         // Convert the rotation change to Euler angles for translation
         Vector3 eulerRotationChange = rotationChange.eulerAngles;
         // Use the change in rotation to adjust translation
-        float translationAmount = eulerRotationChange.y * translationSpeed;
-        if (eulerRotationChange.x > 330)
+        if (eulerRotationChange.x > 300)
         {
+            float translationAmount = (360-eulerRotationChange.x) * translationSpeed;
+
             // Update the position based on the calculated translation
             transform.Translate(translationAmount,0, 0);
-            Debug.Log("near full " + eulerRotationChange);
+            Debug.Log("carriage near full " + eulerRotationChange);
 
         }
         else
         {
+            float translationAmount = eulerRotationChange.x * translationSpeed;
+
             transform.Translate(-translationAmount,0, 0);
-            Debug.Log("near zero " + eulerRotationChange);
+            Debug.Log("carriage near zero " + eulerRotationChange);
 
         }
 

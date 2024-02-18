@@ -1,84 +1,86 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class radiuscontrol : MonoBehaviour
+public class RadiusControl : MonoBehaviour
 {
-    private GameObject cylinderObject;
+    public Vector3 maxVertex;
+    GameObject tool;
+
     private float initialRadius = 1.0f; // Initial radius of the cylinder
+    public float scaleStep = 0.99f; // scale adjustment step
+    private bool meshesIntersecting = false;
+    private Vector3 originalScale;
+
 
     void Start()
     {
-        CreateCylinder();
-        //gameObject.GetComponent<MeshRenderer>().material.color = new Color(Random.value, Random.value, Random.value);
+        tool = GameObject.Find("Lathe Machine - tool-1"); // Reference to the tool GameObject
+                                                          // Store the original scale of the cylinder
+        originalScale = transform.localScale;
     }
 
     void Update()
     {
-        // Check for user input to modify the radius during runtime
-        if (Input.GetKey(KeyCode.UpArrow))
+
+        //GetMaxZVertex();
+
+        //Debug.Log("tool is at " + tool.transform.position);
+        //Debug.Log("Cylinder is at " + cylinderObject.transform.position);
+
+        // Check if the Z-coordinates of the tool and the cylinder are equal
+        if (isIntersecting())
         {
-            IncreaseRadius();
+            UpdateCylinderScale();
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            DecreaseRadius();
-        }
-    }
-    //MeshRenderer smallCylinderRenderer = smallCylinder.GetComponent<MeshRenderer>();
-    //smallCylinderRenderer.material.color = new Color(Random.value, Random.value, Random.value);
-    void CreateCylinder()
-    {
-        // Create a new cylinder GameObject
-        cylinderObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        cylinderObject.transform.position = new Vector3(0,yPositionDecider()*2,0); // Set the position as per your requirements
-        cylinderObject.transform.localScale = new Vector3(initialRadius * 2, 1.0f, initialRadius * 2);
-        SetRandomColor();
     }
 
-    void IncreaseRadius()
+
+
+    void UpdateCylinderScale()
     {
-        // Increase the radius and update the cylinder scale
-        initialRadius += 0.1f; // You can adjust the increment value as per your preference
-        cylinderObject.transform.localScale = new Vector3(initialRadius * 2, 1.0f, initialRadius * 2);
+        // Update the cylinder scale
+        //Debug.Log("UPDATING");
+        transform.localScale = new Vector3(transform.localScale.x * scaleStep, originalScale.y, transform.localScale.z * scaleStep);
     }
 
-    void DecreaseRadius()
-    {
-        // Decrease the radius and update the cylinder scale
-        if (initialRadius > 0.1f) // Ensure the radius doesn't go below a certain threshold
-        {
-            initialRadius -= 0.1f; // You can adjust the decrement value as per your preference
-            cylinderObject.transform.localScale = new Vector3(initialRadius * 2, 1.0f, initialRadius * 2);
-        }
-    }
-    int yPositionDecider()
-    {
-        // Access the character at index 16 of the GameObject's name and convert it to an integer
-        if (gameObject.name.Length > 16)
-        {
-            char characterAtIndex16 = gameObject.name[16];
 
-            // Using int.Parse
-            int convertedValue = int.Parse(characterAtIndex16.ToString());
-
-            // OR using System.Convert.ToInt32
-            // int convertedValue = System.Convert.ToInt32(characterAtIndex16);
-            Debug.Log("Character at index 16 as integer: " + convertedValue);
-            return convertedValue;
-        }
-        else
-        {
-            return -1;
-        }
-    }
-    void SetRandomColor()
+    bool isIntersecting()
     {
-        // Set a random color to the cylinder
-        Renderer cylinderRenderer = cylinderObject.GetComponent<Renderer>();
-        if (cylinderRenderer != null)
+        GameObject otherObject = GameObject.Find("Lathe Machine - tool-1"); // Replace with the actual GameObject name
+
+        if (otherObject != null)
         {
-            cylinderRenderer.material.color = new Color(Random.value, Random.value, Random.value);
+            
+            // Get the MeshColliders of both GameObjects
+            MeshCollider meshCollider1 = GetComponent<MeshCollider>();
+            MeshCollider meshCollider2 = otherObject.GetComponent<MeshCollider>();
+
+            if (meshCollider1 != null && meshCollider2 != null)
+            {
+                // Check for overlapping colliders
+                Vector3 direction;
+                float distance;
+                meshesIntersecting = Physics.ComputePenetration(
+                    meshCollider1, meshCollider1.transform.position, meshCollider1.transform.rotation,
+                    meshCollider2, meshCollider2.transform.position, meshCollider2.transform.rotation,
+                    out direction, out distance);
+
+                if (meshesIntersecting)
+                {
+                    // Meshes are intersecting, set the cutting flag to true
+                    // You can also perform additional actions or checks here
+                    Debug.Log("is Intersecting");
+                    return true;
+                }
+                else
+                {
+                    // Meshes are not intersecting, set the cutting flag to false
+                    //Debug.Log("NOT intersecting");
+                    return false;
+
+                }
+            }
+            else return false;
         }
+        else return false;
     }
 }

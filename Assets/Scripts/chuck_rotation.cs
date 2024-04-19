@@ -12,7 +12,7 @@ public class chuck_rotation : MonoBehaviour
     {
    
         // Check for user input to start/stop spindle rotation
-        if (Input.GetKeyDown(KeyCode.R))
+        if (true)
         {
             // Toggle the rotation state
             isSpindleRotating = !isSpindleRotating;

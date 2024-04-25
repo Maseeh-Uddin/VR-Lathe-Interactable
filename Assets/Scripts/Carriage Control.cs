@@ -30,7 +30,7 @@ public class CarriageControl : MonoBehaviour
 
             // Update the position based on the calculated translation
             transform.Translate(translationAmount,0, 0);
-            Debug.Log("carriage near full " + eulerRotationChange);
+            //Debug.Log("carriage near full " + eulerRotationChange);
 
         }
         else
@@ -38,7 +38,7 @@ public class CarriageControl : MonoBehaviour
             float translationAmount = eulerRotationChange.x * translationSpeed;
 
             transform.Translate(-translationAmount,0, 0);
-            Debug.Log("carriage near zero " + eulerRotationChange);
+            //Debug.Log("carriage near zero " + eulerRotationChange);
 
         }
 

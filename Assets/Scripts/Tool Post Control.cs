@@ -24,14 +24,14 @@ public class ToolPostControl : MonoBehaviour
         // Convert the rotation change to Euler angles for translation
         Vector3 eulerRotationChange = rotationChange.eulerAngles;
         // Use the change in rotation to adjust translation
-        Debug.Log("tool post near full " + eulerRotationChange);
+        //Debug.Log("tool post near full " + eulerRotationChange);
 
         if (eulerRotationChange.x > 310){
             translationAmount = (360-eulerRotationChange.x) * translationSpeed;
 
             // Update the position based on the calculated translation
             transform.Translate(0, 0, translationAmount);
-            Debug.Log("tool post near full "+eulerRotationChange);
+            //Debug.Log("tool post near full "+eulerRotationChange);
 
         }
         else
@@ -39,7 +39,7 @@ public class ToolPostControl : MonoBehaviour
             translationAmount = eulerRotationChange.x * translationSpeed;
 
             transform.Translate(0, 0, -translationAmount);
-            Debug.Log("tool post near zero "+eulerRotationChange);
+            //Debug.Log("tool post near zero "+eulerRotationChange);
 
         }
 

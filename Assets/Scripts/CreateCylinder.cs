@@ -21,8 +21,8 @@ public class CreateCylinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("tool position is " + (otherObject.transform.position));
-        Debug.Log("cylinder position is " + transform.position);
+        //Debug.Log("tool position is " + (otherObject.transform.position));
+        //Debug.Log("cylinder position is " + transform.position);
     }
 
     void CreateNewCylinder()
@@ -59,7 +59,7 @@ public class CreateCylinder : MonoBehaviour
             cylinderRenderer.material = cylinderMaterial;
         }
 
-        Debug.Log("CYLINDER CREATED");
+        //Debug.Log("CYLINDER CREATED");
     }
 
     void SetRandomColor()

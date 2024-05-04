@@ -16,16 +16,15 @@ public class GameMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Inside Game menu manager script");
 
         if (showButton.action.WasPressedThisFrame())
         {
             menu.SetActive(!menu.activeSelf);
-            Debug.Log(menu.activeSelf);
+            //Debug.Log(menu.activeSelf);
         }
         else
         {
-            Debug.Log(menu.activeSelf);
+            //Debug.Log(menu.activeSelf);
 
         }
     }

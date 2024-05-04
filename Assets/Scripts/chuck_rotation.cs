@@ -1,43 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class chuck_rotation : MonoBehaviour
 {
     public float rotationSpeed = 50.0f;  // Adjust the speed of rotation as needed
-    private bool isSpindleRotating = false;
+    public bool isSpindleRotating = false;
 
-    void Update()
+    private Coroutine rotationCoroutine;
+
+    public void start_chuck_rotation()
     {
-   
-        // Check for user input to start/stop spindle rotation
-        if (true)
+        if (!isSpindleRotating)
         {
-            // Toggle the rotation state
-            isSpindleRotating = !isSpindleRotating;
-        }
-
-        // Rotate the chuck if it's set to rotate
-        if (isSpindleRotating)
-        {
-            RotateChuck();
+            isSpindleRotating = true;
+            rotationCoroutine = StartCoroutine(RotateChuck());
         }
     }
 
-    void RotateChuck()
+    public void stop_chuck_rotation()
     {
-        // Rotate the chuck around its own local Y-axis
-
-        Vector3 Pivot = transform.position;
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime*15);
+        if (isSpindleRotating && rotationCoroutine != null)
+        {
+            StopCoroutine(rotationCoroutine);
+            isSpindleRotating = false;
+        }
     }
-    void OnDrawGizmos()
-    {
-        // Set the color for the gizmo (you can customize this)
-        Gizmos.color = Color.red;
 
-        // Draw a sphere at the origin position
-        Gizmos.DrawSphere(Vector3.zero, 0.1f);
+    IEnumerator RotateChuck()
+    {
+        while (isSpindleRotating)
+        {
+            // Rotate the chuck around its own local Y-axis
+            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime*10);
+
+            yield return null; // Wait for the next frame
+        }
     }
 }

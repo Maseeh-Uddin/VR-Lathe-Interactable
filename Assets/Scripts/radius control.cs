@@ -5,7 +5,7 @@ public class RadiusControl : MonoBehaviour
     public Vector3 maxVertex;
     GameObject tool;
 
-    private float initialRadius = 1.0f; // Initial radius of the cylinder
+    //private float initialRadius = 1.0f; // Initial radius of the cylinder
     public float scaleStep = 0.99f; // scale adjustment step
     private bool meshesIntersecting = false;
     private Vector3 originalScale;
@@ -68,7 +68,7 @@ public class RadiusControl : MonoBehaviour
                 {
                     // Meshes are intersecting, set the cutting flag to true
                     // You can also perform additional actions or checks here
-                    Debug.Log("is Intersecting");
+                    //Debug.Log("is Intersecting");
                     return true;
                 }
                 else

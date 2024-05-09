@@ -1,26 +1,91 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class newScaling : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public float startDelay = 57f;   // Delay before scaling starts (in seconds)
-    public float duration = 15f;    // Total duration of scaling (in seconds)
-    public Vector3 scaleChange = new Vector3(0, -0.001f, 0);
+    //public Vector3 maxVertex;
+    GameObject tool;
 
-    private float elapsedTime = 0f;
+    //private float initialRadius = 1.0f; // Initial radius of the cylinder
+    public float scaleStep = 0.99f; // scale adjustment step
+    private bool meshesIntersecting = false;
+    private Vector3 originalScale;
+
+
+    void Start()
+    {
+        tool = GameObject.Find("Lathe Machine - tool-1"); // Reference to the tool GameObject
+                                                          // Store the original scale of the cylinder
+        originalScale = transform.localScale;
+    }
 
     void Update()
     {
-        // Increment the elapsed time
-        elapsedTime += Time.deltaTime;
 
-        // Check if it's time to start scaling
-        if (elapsedTime >= startDelay && elapsedTime <= startDelay + duration)
+        //GetMaxZVertex();
+
+        //Debug.Log("tool is at " + tool.transform.position);
+        //Debug.Log("Cylinder is at " + cylinderObject.transform.position);
+
+        // Check if the Z-coordinates of the tool and the cylinder are equal
+        if (isIntersecting())
         {
-            // Apply the scale change during the specified duration
-            transform.localScale += scaleChange * Time.deltaTime;
+            Debug.Log("yes intersecting");
+            UpdateCylinderScale();
         }
+        else
+        {
+            Debug.Log("No not intersecting");
+        }
+    }
+
+
+
+    void UpdateCylinderScale()
+    {
+        // Update the cylinder scale
+        Debug.Log("UPDATING");
+        transform.localScale = new Vector3(transform.localScale.x * scaleStep, originalScale.y , transform.localScale.z* scaleStep);
+    }
+
+
+    bool isIntersecting()
+    {
+        GameObject otherObject = GameObject.Find("Lathe Machine - tool-1"); // Replace with the actual GameObject name
+
+        if (otherObject != null)
+        {
+
+            // Get the MeshColliders of both GameObjects
+            MeshCollider meshCollider1 = GetComponent<MeshCollider>();
+            MeshCollider meshCollider2 = otherObject.GetComponent<MeshCollider>();
+
+            if (meshCollider1 != null && meshCollider2 != null)
+            {
+                // Check for overlapping colliders
+                Vector3 direction;
+                float distance;
+                meshesIntersecting = Physics.ComputePenetration(
+                    meshCollider1, meshCollider1.transform.position, meshCollider1.transform.rotation,
+                    meshCollider2, meshCollider2.transform.position, meshCollider2.transform.rotation,
+                    out direction, out distance);
+
+                if (meshesIntersecting)
+                {
+                    // Meshes are intersecting, set the cutting flag to true
+                    // You can also perform additional actions or checks here
+                    //Debug.Log("is Intersecting");
+                    return true;
+                }
+                else
+                {
+                    // Meshes are not intersecting, set the cutting flag to false
+                    //Debug.Log("NOT intersecting");
+                    return false;
+
+                }
+            }
+            else return false;
+        }
+        else return false;
     }
 }

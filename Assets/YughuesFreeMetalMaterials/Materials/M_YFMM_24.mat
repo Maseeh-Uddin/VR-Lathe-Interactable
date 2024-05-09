@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: M_YFMM_24
   m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: d114cde0600508c4f9eed72b935654e6, type: 2}
+  m_Parent: {fileID: 2100000, guid: 3cd173ae4543f8745ac463237321e8db, type: 2}
   m_ModifiedSerializedProperties: 22
   m_ValidKeywords:
   - _ALPHATEST_ON

@@ -6,8 +6,9 @@ public class ToolPostControl : MonoBehaviour
 {
     GameObject feedWheel2;
     private Quaternion initialRotation;
-    private float translationSpeed = 0.0002f;
+    private float translationSpeed = 0.0001f;
     private float translationAmount = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
